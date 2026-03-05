@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <RootNamespace>JellyfinUpcomingMedia</RootNamespace>
+    <AssemblyName>JellyfinUpcomingMedia</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <!-- Jellyfin references — provided at runtime by the server -->
+  <ItemGroup>
+    <PackageReference Include="Jellyfin.Controller" Version="10.11.6" />
+    <PackageReference Include="Jellyfin.Model" Version="10.11.6" />
+  </ItemGroup>
+
+  <!-- Embedded web pages -->
+  <ItemGroup>
+    <EmbeddedResource Include="Pages\**\*" />
+  </ItemGroup>
+
+</Project>

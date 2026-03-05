@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Upcoming Media &mdash; Settings</title>
+</head>
+<body>
+    <div id="UpcomingMediaConfigPage" data-role="page" class="page type-interior pluginConfigurationPage"
+         data-require="emby-input,emby-button,emby-checkbox,emby-select">
+
+        <div data-role="content">
+            <div class="content-primary">
+                <h2>Upcoming Media &mdash; Settings</h2>
+
+                <form id="UpcomingMediaConfigForm">
+                    <div class="checkboxContainer">
+                        <label>
+                            <input is="emby-checkbox" id="chkShowOnHomePage" type="checkbox" />
+                            <span>Show "Upcoming" section on the home page</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="txtMaxItems">Max items on home page</label>
+                        <input is="emby-input" id="txtMaxItems" type="number" min="1" max="100" />
+                    </div>
+                    <div class="checkboxContainer">
+                        <label>
+                            <input is="emby-checkbox" id="chkEnableReminders" type="checkbox" />
+                            <span>Enable scheduled reminders (auto-update statuses)</span>
+                        </label>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="txtTmdbApiKey">TMDb API Key (optional — for auto-fetching trailers)</label>
+                        <input is="emby-input" id="txtTmdbApiKey" type="text" placeholder="e.g. abc123def456..." />
+                        <div style="font-size:.75em;opacity:.5;margin-top:2px;">Get a free key at <a href="https://www.themoviedb.org/settings/api" target="_blank" style="color:#00a4dc;">themoviedb.org/settings/api</a></div>
+                    </div>
+
+                    <hr style="border-color:rgba(255,255,255,.08);margin:1em 0;" />
+                    <h3 style="margin-bottom:.5em;">Library &amp; File System</h3>
+                    <div style="font-size:.8em;opacity:.6;margin-bottom:.8em;">
+                        When you add an item, a folder is auto-created in your library (e.g. <code>Movie (2026)/</code>).
+                        Drop your real file there with a <code>.real</code> extension
+                        (e.g. <code>Movie.mkv.real</code>). Jellyfin ignores it.
+                        At the scheduled time, the plugin removes the <code>.real</code> extension &mdash; your movie appears instantly.
+                        <br/><strong>Optional:</strong> Create a dummy MKV for Jellyfin to pre-fetch metadata (poster, cast, etc.) before the real file arrives.
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="txtLibraryPath">Library Path (folder registered as a Jellyfin library)</label>
+                        <input is="emby-input" id="txtLibraryPath" type="text" placeholder="e.g. D:\Movies or /media/movies" />
+                        <div style="font-size:.75em;opacity:.5;margin-top:2px;">This folder must already be set up as a Movie or TV library in Jellyfin.</div>
+                    </div>
+                    <br />
+                    <button is="emby-button" type="submit" class="raised button-submit block">
+                        <span>Save Settings</span>
+                    </button>
+                </form>
+
+                <hr />
+
+                <!-- Status message -->
+                <div id="statusMsg" style="display:none;padding:8px 12px;margin-bottom:1em;border-radius:4px;font-weight:600;"></div>
+
+                <!-- Search -->
+                <h2>Manage Upcoming Items</h2>
+                <div id="searchSection" style="margin-bottom:1em;">
+                    <div class="inputContainer" style="display:inline-flex;gap:8px;width:100%;">
+                        <input is="emby-input" id="txtSearch" type="text"
+                               placeholder="Search for a movie or show..." style="flex:1;" />
+                        <select is="emby-select" id="selMediaType" style="width:120px;">
+                            <option value="movie">Movie</option>
+                            <option value="tv">TV Show</option>
+                        </select>
+                        <button is="emby-button" id="btnSearch" class="raised">
+                            <span>Search</span>
+                        </button>
+                    </div>
+                    <div id="searchResults" style="margin-top:8px;"></div>
+                </div>
+
+                <!-- Edit Form (hidden by default) -->
+                <div id="editSection" style="display:none;padding:1em;margin-bottom:1em;background:rgba(255,255,255,.04);border-radius:8px;border:1px solid rgba(255,255,255,.1);">
+                    <h3 id="editTitle">Edit Item</h3>
+                    <input type="hidden" id="editId" />
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="editName">Title</label>
+                        <input is="emby-input" id="editName" type="text" />
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="editOverview">Overview</label>
+                        <textarea id="editOverview" is="emby-input" rows="3" style="width:100%;"></textarea>
+                    </div>
+                    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                        <div class="inputContainer" style="flex:1;min-width:140px;">
+                            <label class="inputLabel" for="editAvailDate">Available Date</label>
+                            <input is="emby-input" id="editAvailDate" type="date" />
+                        </div>
+                        <div class="inputContainer" style="flex:0 0 120px;">
+                            <label class="inputLabel" for="editAvailTime">Time</label>
+                            <input is="emby-input" id="editAvailTime" type="time" value="00:00" />
+                        </div>
+                        <div class="inputContainer" style="flex:1;min-width:140px;">
+                            <label class="inputLabel" for="editReleaseDate">Release Date</label>
+                            <input is="emby-input" id="editReleaseDate" type="date" />
+                        </div>
+                        <div class="inputContainer" style="flex:0 0 120px;">
+                            <label class="inputLabel" for="editReleaseTime">Time</label>
+                            <input is="emby-input" id="editReleaseTime" type="time" value="00:00" />
+                        </div>
+                        <div class="inputContainer" style="flex:1;min-width:140px;">
+                            <label class="inputLabel" for="editStatus">Status</label>
+                            <select is="emby-select" id="editStatus">
+                                <option value="ComingSoon">Coming Soon</option>
+                                <option value="Available">Available</option>
+                                <option value="Expired">Expired</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="editMessage">Custom Message</label>
+                        <input is="emby-input" id="editMessage" type="text" placeholder="e.g. Premieres on Netflix!" />
+                    </div>
+                    <div class="inputContainer">
+                        <label class="inputLabel" for="editTrailerUrl">Trailer URL (YouTube)</label>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input is="emby-input" id="editTrailerUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." style="flex:1;" />
+                            <button is="emby-button" id="btnFetchTrailer" class="raised" type="button" style="font-size:.8em;padding:6px 14px;white-space:nowrap;">
+                                <span>🎬 Fetch from TMDb</span>
+                            </button>
+                        </div>
+                        <div id="trailerFetchStatus" style="font-size:.75em;margin-top:4px;"></div>
+                    </div>
+
+                    <hr style="border-color:rgba(255,255,255,.08);margin:.8em 0;" />
+                    <h4 style="margin-bottom:.4em;">📁 Library Folder &amp; Files</h4>
+                    <div id="dummyFileSection">
+                        <div id="libraryFolderInfo" style="font-size:.82em;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,.04);display:none;"></div>
+                        <div id="dummyStatus" style="font-size:.82em;margin-bottom:8px;padding:6px 10px;border-radius:6px;background:rgba(255,255,255,.04);display:none;"></div>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+                            <button is="emby-button" id="btnCreateDummy" class="raised" type="button" style="font-size:.8em;padding:6px 14px;">
+                                <span>📄 Create Dummy (optional)</span>
+                            </button>
+                            <button is="emby-button" id="btnDeleteDummy" class="raised" type="button" style="font-size:.8em;padding:6px 14px;color:#ef5350;display:none;">
+                                <span>🗑 Delete Dummy</span>
+                            </button>
+                            <button is="emby-button" id="btnScanRealFile" class="raised" type="button" style="font-size:.8em;padding:6px 14px;">
+                                <span>🔍 Scan for .real File</span>
+                            </button>
+                            <button is="emby-button" id="btnSwapFile" class="raised" type="button" style="font-size:.8em;padding:6px 14px;color:#66bb6a;display:none;">
+                                <span>⚡ Activate Now</span>
+                            </button>
+                        </div>
+                        <div class="inputContainer">
+                            <label class="inputLabel" for="editRealFilePath">Real File Path (auto-detected from .real file)</label>
+                            <input is="emby-input" id="editRealFilePath" type="text" placeholder="Auto-detected when you drop a .real file in the library folder" readonly />
+                        </div>
+                        <div id="dummyActionStatus" style="font-size:.75em;margin-top:4px;"></div>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-top:8px;">
+                        <button is="emby-button" id="btnSaveEdit" class="raised button-submit">
+                            <span>Save Changes</span>
+                        </button>
+                        <button is="emby-button" id="btnCancelEdit" class="raised">
+                            <span>Cancel</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Items List -->
+                <div id="upcomingList">
+                    <p>Loading&hellip;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap: img onerror loads external JS file -->
+    <img src="data:,x" onerror="
+        (function(){
+            if(document.getElementById('cfgScriptLoaded')) return;
+            var m=document.createElement('span');m.id='cfgScriptLoaded';m.style.display='none';document.body.appendChild(m);
+            var s=document.createElement('script');
+            s.src=ApiClient.getUrl('web/configurationpage',{name:'UpcomingMediaConfigPageJS'});
+            document.head.appendChild(s);
+        })();
+        this.remove();
+    " style="display:none" />
+</body>
+</html>

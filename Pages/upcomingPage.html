@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Upcoming Media</title>
+</head>
+<body>
+    <div id="UpcomingMediaPage" data-role="page" class="page type-interior pluginConfigurationPage"
+         data-require="emby-input,emby-button,emby-select">
+        <div data-role="content">
+            <div class="content-primary">
+                <h2 style="display:flex;align-items:center;gap:8px;">
+                    <span class="material-icons" style="font-size:1.1em;">new_releases</span>
+                    Upcoming Media
+                </h2>
+
+                <!-- Filters -->
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1em;">
+                    <select is="emby-select" id="filterStatus" style="width:160px;">
+                        <option value="">All Statuses</option>
+                        <option value="ComingSoon">Coming Soon</option>
+                        <option value="Available">Available</option>
+                    </select>
+                    <select is="emby-select" id="filterType" style="width:160px;">
+                        <option value="">All Types</option>
+                        <option value="Movie">Movies</option>
+                        <option value="Series">TV Shows</option>
+                    </select>
+                </div>
+
+                <div id="upcomingGrid" style="display:flex;flex-wrap:wrap;gap:16px;">
+                    <p>Loading&hellip;</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap: img onerror fires even from innerHTML injection -->
+    <img src="data:,x" onerror="
+        (function(){
+            if(document.getElementById('upcomingPageScriptLoaded')) return;
+            var m=document.createElement('span');m.id='upcomingPageScriptLoaded';m.style.display='none';document.body.appendChild(m);
+            var s=document.createElement('script');
+            s.src=ApiClient.getUrl('web/configurationpage',{name:'UpcomingMediaPageJS'});
+            document.head.appendChild(s);
+        })();
+        this.remove();
+    " style="display:none" />
+</body>
+</html>
