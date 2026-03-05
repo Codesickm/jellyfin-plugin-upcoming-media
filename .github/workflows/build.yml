@@ -21,10 +21,10 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Restore
-        run: dotnet restore
+        run: dotnet restore JellyfinUpcomingMedia.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build JellyfinUpcomingMedia.csproj --configuration Release --no-restore
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -50,7 +50,7 @@ jobs:
           dotnet-version: '9.0.x'
 
       - name: Build Release
-        run: dotnet build --configuration Release
+        run: dotnet build JellyfinUpcomingMedia.csproj --configuration Release
 
       - name: Compute DLL checksum (MD5)
         id: md5
