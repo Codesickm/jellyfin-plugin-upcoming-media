@@ -38,7 +38,7 @@
 ### Build from Source
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/jellyfin-plugin-upcoming-media.git
+git clone https://github.com/Codesickm/jellyfin-plugin-upcoming-media.git
 cd jellyfin-plugin-upcoming-media
 dotnet build -c Release
 ```

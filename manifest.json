@@ -4,15 +4,15 @@
     "name": "Upcoming Media",
     "overview": "Display upcoming movies and shows on your Jellyfin home page. Admins can search TMDb, set release dates, and add 'Coming Soon' labels.",
     "description": "A Jellyfin plugin that lets server admins curate a list of upcoming movies and TV shows. Features include:\n\n- Search and fetch metadata from TMDb (The Movie Database)\n- Set custom available dates and 'Coming Soon' messages\n- Automatic status transitions (Coming Soon → Available → Expired)\n- Home page widget showing upcoming content to all users\n- Scheduled task for automated status updates",
-    "owner": "YOUR_GITHUB_USERNAME",
+    "owner": "Codesickm",
     "category": "General",
-    "imageUrl": "https://raw.githubusercontent.com/YOUR_GITHUB_USERNAME/jellyfin-plugin-upcoming-media/main/icon.png",
+    "imageUrl": "https://raw.githubusercontent.com/Codesickm/jellyfin-plugin-upcoming-media/main/icon.png",
     "versions": [
       {
         "version": "1.0.0.0",
         "changelog": "Initial release with TMDb search, home widget, file swap system, and scheduled tasks.",
         "targetAbi": "10.11.0.0",
-        "sourceUrl": "https://github.com/YOUR_GITHUB_USERNAME/jellyfin-plugin-upcoming-media/releases/download/v1.0.0/JellyfinUpcomingMedia.dll",
+        "sourceUrl": "https://github.com/Codesickm/jellyfin-plugin-upcoming-media/releases/download/v1.0.0/JellyfinUpcomingMedia.dll",
         "timestamp": "2026-03-05T00:00:00Z"
       }
     ]
