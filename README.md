@@ -25,7 +25,17 @@
 
 ## Installation
 
-### Manual Install (Recommended for now)
+### Plugin Repository (Recommended)
+
+1. In Jellyfin, go to **Dashboard** → **Plugins** → **Repositories**
+2. Click **Add** and enter:
+   - **Name:** `Upcoming Media`
+   - **URL:** `https://raw.githubusercontent.com/Codesickm/jellyfin-plugin-upcoming-media/main/manifest.json`
+3. Click **Save**
+4. Go to **Plugins** → **Catalog**, find **Upcoming Media**, and click **Install**
+5. Restart Jellyfin
+
+### Manual Install
 
 1. Download `JellyfinUpcomingMedia.dll` from the [latest release](../../releases/latest).
 2. Place it in your Jellyfin plugin directory:
